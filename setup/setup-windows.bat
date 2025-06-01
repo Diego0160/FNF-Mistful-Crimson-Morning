@@ -16,10 +16,100 @@ echo        INSTALADOR DE PSYCH ENGINE 0.7.3
 echo =============================================
 echo.
 
+:: Verificar si Visual Studio está instalado
+:check_vs
+echo Verificando Visual Studio Community...
+
+if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC" (
+    echo Visual Studio Community 2022 ya esta instalado.
+    goto check_vs_components
+)
+
+if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC" (
+    echo Visual Studio Community 2019 ya esta instalado.
+    goto check_vs_components
+)
+
+echo Visual Studio Community no esta instalado.
+set /p install_vs=¿Deseas instalar Visual Studio Community? (S/N): 
+if /i "%install_vs%"=="S" goto install_vs
+goto check_haxe
+
+:check_vs_components
+echo Verificando componentes necesarios de Visual Studio...
+
+:: Verificar si los componentes necesarios están instalados
+set COMPONENTS_MISSING=0
+
+if not exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC" (
+    if not exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC" (
+        set COMPONENTS_MISSING=1
+    )
+)
+
+if not exist "C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0" (
+    set COMPONENTS_MISSING=1
+)
+
+if %COMPONENTS_MISSING%==1 (
+    echo Faltan componentes necesarios de Visual Studio.
+    set /p install_components=¿Deseas instalar los componentes necesarios? (S/N): 
+    if /i "%install_components%"=="S" goto install_vs
+)
+
+goto check_haxe
+
+:install_vs
+echo =============================================
+echo Instalando Microsoft Visual Studio Community
+echo =============================================
+
+echo Descargando Visual Studio Community Installer...
+echo Este proceso puede tardar varios minutos dependiendo de tu conexion a internet.
+
+:: Guardar directorio actual
+set CURRENT_DIR=%CD%
+
+:: Cambiar al directorio raíz del proyecto
+cd %~dp0..
+
+:: Descargar el instalador con barra de progreso
+curl -# -O https://download.visualstudio.microsoft.com/download/pr/3105fcfe-e771-41d6-9a1c-fc971e7d03a7/8eb13958dc429a6e6f7e0d6704d43a55f18d02a253608351b6bf6723ffdaf24e/vs_Community.exe
+
+if not exist "vs_Community.exe" (
+    echo ERROR: No se pudo descargar el instalador de Visual Studio.
+    cd %CURRENT_DIR%
+    pause
+    exit /b
+)
+
+echo Ejecutando el instalador de Visual Studio...
+echo IMPORTANTE: Selecciona los componentes "Desarrollo de escritorio con C++" cuando se abra el instalador.
+
+vs_Community.exe --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041 -p
+
+if errorlevel 1 (
+    echo ERROR: Fallo la instalacion de Visual Studio.
+    cd %CURRENT_DIR%
+    pause
+    exit /b
+)
+
+echo Limpiando archivos temporales...
+del vs_Community.exe
+
+:: Volver al directorio original
+cd %CURRENT_DIR%
+
+echo Visual Studio Community instalado correctamente.
+
+:: Continuar con la instalación de Haxe
+
 set REQUIRED_HAXE=4.3.2
 set HAXE_EXECUTABLE=Haxe_4.3.2.exe
 
 :check_haxe
+echo.
 echo Verificando Haxe...
 
 where haxe >nul 2>&1
