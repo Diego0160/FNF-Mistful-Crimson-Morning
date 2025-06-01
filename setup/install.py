@@ -12,9 +12,11 @@ ANSI_WHT_BG = '\033[47m'
 VERSION = '0.0.2'
 
 def check(config):
+    # Normalizar la ruta usando Path para compatibilidad multiplataforma
     config = str(Path(config))
     cwd = os.getcwd()
 
+    # Verificar si existe un repositorio local de haxelib
     haxelib_path = Path(cwd) / '.haxelib'
     project_xml = Path(cwd) / 'Project.xml'
 
