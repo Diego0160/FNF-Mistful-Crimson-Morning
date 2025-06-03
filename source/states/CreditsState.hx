@@ -138,7 +138,8 @@ class CreditsState extends MusicBeatState
 		changeSelection();
 		super.create();
 
-    	Transition.enterState(0.5, 1.0, 0.7);
+    	// Implementar la transición ZoomIn al entrar
+    	Transition.enterState(0.0, 1.0, 0.8);
 	}
 
 	var quitting:Bool = false;

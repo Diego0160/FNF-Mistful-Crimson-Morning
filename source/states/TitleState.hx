@@ -422,7 +422,11 @@ class TitleState extends MusicBeatState
 						if (mustUpdate) {
 							MusicBeatState.switchState(new OutdatedState());
 						} else {
-							MusicBeatState.switchState(new MainMenuState());
+							// Usar la transición ZoomOut antes de cambiar al MainMenuState
+							Transition.zoomOut("title", function() {
+								Transition.fromState = "title";
+								MusicBeatState.switchState(new MainMenuState());
+							});
 						}
 						closedState = true;
 					});

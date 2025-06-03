@@ -175,19 +175,13 @@ class MainMenuState extends MusicBeatState
         			switch (optionShit[curSelected])
         			{
             			case 'freeplay':
-                			Transition.zoomOut("main", function() {
-    							MusicBeatState.switchState(new FreeplayState());
-								});
+                			MusicBeatState.switchState(new FreeplayState());
             
             			case 'credits':
-                			Transition.zoomOut("main", function() {
-    							MusicBeatState.switchState(new CreditsState());
-								});
+                			MusicBeatState.switchState(new CreditsState());
             
             			case 'options':
-                			Transition.zoomOut("main", function() {
-    							MusicBeatState.switchState(new OptionsState());
-								});
+                			MusicBeatState.switchState(new OptionsState());
 							FlxG.sound.music.stop();
                 			FlxG.sound.playMusic(Paths.music('offsetSong'), 0);
                 			FlxG.sound.music.fadeIn(1, 0, 0.7);
