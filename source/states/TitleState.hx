@@ -165,9 +165,7 @@ class TitleState extends MusicBeatState
                 startIntro();
             else
             {
-                // Reproducir música específica para la intro
                 FlxG.sound.playMusic(Paths.music('intro-freakyMenu'), 0);
-                
                 new FlxTimer().start(1, function(tmr:FlxTimer)
                 {
                     startIntro();
@@ -244,8 +242,6 @@ class TitleState extends MusicBeatState
 			#end
 
 			default:
-			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
-			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
 				gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 				gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
@@ -412,24 +408,26 @@ class TitleState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 				transitioning = true;
-				
-				// CORRECCIÓN APLICADA AQUÍ
-				FlxG.sound.music.fadeOut(1, 0, function(twn:flixel.tweens.FlxTween) {
-					FlxG.sound.music.stop();
-					
-					new FlxTimer().start(1, function(tmr:FlxTimer)
-					{
-						if (mustUpdate) {
-							MusicBeatState.switchState(new OutdatedState());
-						} else {
-							// Usar la transición ZoomOut antes de cambiar al MainMenuState
-							Transition.zoomOut("title", function() {
-								Transition.fromState = "title";
-								MusicBeatState.switchState(new MainMenuState());
-							});
-						}
-						closedState = true;
-					});
+
+				// Fade out current music and play freakyMenu
+				FlxG.sound.music.fadeOut(0.5, 0, function(twn:flixel.tweens.FlxTween) {
+				    FlxG.sound.music.stop();
+				    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+				    FlxG.sound.music.fadeIn(0.5, 0, 0.7);
+				    
+				    new FlxTimer().start(0.5, function(tmr:FlxTimer)
+				    {
+				        if (mustUpdate) {
+				            MusicBeatState.switchState(new OutdatedState());
+				        } else {
+				            // Usar la transición ZoomOut antes de cambiar al MainMenuState
+				            Transition.zoomOut("title", function() {
+				                Transition.fromState = "title";
+				                MusicBeatState.switchState(new MainMenuState());
+				            });
+				        }
+				        closedState = true;
+				    });
 				});
 			}
 			#if TITLE_SCREEN_EASTER_EGG

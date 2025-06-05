@@ -41,9 +41,6 @@ class MainMenuState extends MusicBeatState
     DiscordClient.changePresence("In the Menus", null);
     #end
     
-    transIn = FlxTransitionableState.defaultTransIn;
-    transOut = FlxTransitionableState.defaultTransOut;
-
     persistentUpdate = persistentDraw = true;
 
     var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
@@ -54,6 +51,15 @@ class MainMenuState extends MusicBeatState
     bg.updateHitbox();
     bg.screenCenter();
     add(bg);
+
+    var watermark:FlxSprite = new FlxSprite();
+    watermark.loadGraphic(Paths.image('mainmenu/menuWatermark'));
+    watermark.antialiasing = ClientPrefs.data.antialiasing;
+    watermark.setGraphicSize(Std.int(watermark.width * 0.5));
+    watermark.updateHitbox();
+    watermark.x = FlxG.width - watermark.width;
+    watermark.y = FlxG.height - watermark.height;
+    add(watermark);
 
     camFollow = new FlxObject(0, 0, 1, 1);
     add(camFollow);
@@ -73,8 +79,7 @@ class MainMenuState extends MusicBeatState
 
     for (i in 0...optionShit.length)
     {
-        var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-        var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
+        var menuItem:FlxSprite = new FlxSprite();
         menuItem.antialiasing = ClientPrefs.data.antialiasing;
         menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
         menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
@@ -86,7 +91,21 @@ class MainMenuState extends MusicBeatState
             scr = 0;
         menuItem.scrollFactor.set(0, scr);
         menuItem.updateHitbox();
-        menuItem.screenCenter(X);
+        // Custom positions for Freeplay, Credits, and Options
+        switch(optionShit[i]) {
+            case 'freeplay':
+                menuItem.x = 10;
+                menuItem.y = 180;
+            case 'credits':
+                menuItem.x = 10;
+                menuItem.y = 340;
+            case 'options':
+                menuItem.x = 10;
+                menuItem.y = 500;
+            default:
+                menuItem.screenCenter(X);
+                menuItem.y = 60;
+        }
     }
     
     var mistVer:FlxText = new FlxText(12, FlxG.height - 84, 0, "Mistful Crimson Morning v" + mistVersion, 12);
@@ -120,23 +139,20 @@ class MainMenuState extends MusicBeatState
 
     super.create();
 
-    // Reproducir música de menú principal
     if (FlxG.sound.music == null || !FlxG.sound.music.playing) {
         FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
         FlxG.sound.music.fadeIn(4, 0, 0.7);
     }
 
-    // Manejo de transición al entrar al menú
     if (Transition.fromState != "main") {
         FlxG.camera.zoom = 0.8;
         Transition.zoomIn("main");
     	}
 	else {
-        // Si es la primera vez, asegurarse que el zoom esté correcto
         Transition.resetZoom();
     }
 
-    FlxG.camera.follow(camFollow, null, 9);
+    // FlxG.camera.follow(camFollow, null, 9);
 }
 
 	var selectedSomethin:Bool = false;
@@ -162,7 +178,14 @@ class MainMenuState extends MusicBeatState
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
+				
+				// Fade out current music and play intro-freakyMenu
+				FlxG.sound.music.fadeOut(0.5, 0, function(twn:flixel.tweens.FlxTween) {
+				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music('intro-freakyMenu'), 0);
+				FlxG.sound.music.fadeIn(0.5, 0, 0.7);
 				MusicBeatState.switchState(new TitleState());
+				});
 			}
 
 			if (controls.ACCEPT)

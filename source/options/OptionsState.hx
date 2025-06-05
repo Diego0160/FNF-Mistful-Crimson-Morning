@@ -108,15 +108,12 @@ class OptionsState extends MusicBeatState
 			}
 			else 
 			if (!onPlayState) {
-        	FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-        	FlxG.sound.music.fadeIn(1, 0, 0.7);
+        		FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+        		FlxG.sound.music.fadeIn(1, 0, 0.7);
     		}
-            Transition.exitState(0.3, 0.9, function()
-            {
-                Transition.zoomOut("options", function() {
-                    Transition.fromState = "options";
-                    MusicBeatState.switchState(new MainMenuState());
-                });
+            Transition.zoomOut("options", function() {
+                Transition.fromState = "options";
+                MusicBeatState.switchState(new MainMenuState());
             });
 			super.update(elapsed);
 		}

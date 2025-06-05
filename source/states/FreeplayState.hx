@@ -104,6 +104,15 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
+		var watermark:FlxSprite = new FlxSprite();
+    	watermark.loadGraphic(Paths.image('mainmenu/menuWatermark'));
+    	watermark.antialiasing = ClientPrefs.data.antialiasing;
+    	watermark.setGraphicSize(Std.int(watermark.width * 0.5));
+    	watermark.updateHitbox();
+    	watermark.x = FlxG.width - watermark.width;
+    	watermark.y = FlxG.height - watermark.height - 25;
+    	add(watermark);
+
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
@@ -183,7 +192,7 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 		super.create();
 
-		Transition.enterState(0.0, 1.0, 0.8);
+		Transition.enterState(0.5, 1.0, 0.6);
 	}
 
 	override function closeSubState() {
@@ -311,13 +320,9 @@ class FreeplayState extends MusicBeatState
             if(colorTween != null) colorTween.cancel();
             FlxG.sound.play(Paths.sound('cancelMenu'));
             
-            // Efecto de salida: zoom desde 1 hasta 0 con desvanecimiento
-            Transition.exitState(0.0, 0.8, function()
-            {
-                Transition.zoomOut("freeplay", function() {
-                    Transition.fromState = "freeplay";
-                    MusicBeatState.switchState(new MainMenuState());
-                });
+            Transition.zoomOut("freeplay", function() {
+                Transition.fromState = "freeplay";
+                MusicBeatState.switchState(new MainMenuState());
             });
 		}
 		if(FlxG.keys.justPressed.CONTROL && !player.playingMusic)
