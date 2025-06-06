@@ -182,9 +182,12 @@ class MainMenuState extends MusicBeatState
 				// Fade out current music and play intro-freakyMenu
 				FlxG.sound.music.fadeOut(0.5, 0, function(twn:flixel.tweens.FlxTween) {
 				FlxG.sound.music.stop();
+                Transition.zoomOut("MainMenuState", function() {
+                    Transition.fromState = "MainMenuState";
+                    MusicBeatState.switchState(new TitleState());
+                });
 				FlxG.sound.playMusic(Paths.music('intro-freakyMenu'), 0);
 				FlxG.sound.music.fadeIn(0.5, 0, 0.7);
-				MusicBeatState.switchState(new TitleState());
 				});
 			}
 

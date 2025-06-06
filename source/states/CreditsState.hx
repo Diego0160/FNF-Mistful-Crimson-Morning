@@ -32,9 +32,6 @@ class CreditsState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		// Implementar la transición ZoomIn al entrar
-		Transition.enterState(0.5, 1.0, 0.7);
-
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -147,6 +144,8 @@ class CreditsState extends MusicBeatState
 		intendedColor = bg.color;
 		changeSelection();
 		super.create();
+
+		Transition.enterState(0.5, 1.0, 0.6);
 	}
 
 	var quitting:Bool = false;
