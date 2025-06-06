@@ -9,7 +9,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var mistVersion:String = "?\nRestored Version";
+	public static var mistVersion:String = "?\n(Old Build) | Restored Edition";
 	public static var micdUpVersion:String = "2.0.3\nAmp'd Even Further"; // The Latest Version ):
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
