@@ -4,6 +4,12 @@ import lime.app.Promise;
 import lime.app.Future;
 
 import flixel.FlxState;
+import flixel.FlxSprite;
+import flixel.FlxG;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxColor;
 
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
@@ -17,12 +23,9 @@ import haxe.io.Path;
 class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
-
-	// Browsers will load create(), you can make your song load a custom directory there
-	// If you're compiling to desktop (or something that doesn't use NO_PRELOAD_ALL), search for getNextState instead
-	// I'd recommend doing it on both actually lol
-	
-	// TO DO: Make this easier
+	public static var currentZoom:Float = 1.0;
+	public static var fromState:String = "";
+	private static var fadeOverlay:FlxSprite;
 	
 	var target:FlxState;
 	var stopMusic = false;
@@ -85,10 +88,6 @@ class LoadingState extends MusicBeatState
 		{
 			var library = Assets.getLibrary("songs");
 			final symbolPath = path.split(":").pop();
-			// @:privateAccess
-			// library.types.set(symbolPath, SOUND);
-			// @:privateAccess
-			// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
 			var callback = callbacks.add("song:" + path);
 			Assets.loadSound(path).onComplete(function (_) { callback(); });
 		}
@@ -158,38 +157,15 @@ class LoadingState extends MusicBeatState
 		Paths.setCurrentLevel(directory);
 		trace('Setting asset folder to ' + directory);
 
-		/*#if NO_PRELOAD_ALL
-		var loaded:Bool = false;
-		if (PlayState.SONG != null) {
-			loaded = isSoundLoaded(getSongPath()) && (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath())) && isLibraryLoaded('week_assets');
-		}
-		
-		if (!loaded)
-			return new LoadingState(target, stopMusic, directory);
-		#end*/
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
 		return target;
 	}
 	
-	/*#if NO_PRELOAD_ALL
-	static function isSoundLoaded(path:String):Bool
-	{
-		trace(path);
-		return Assets.cache.hasSound(path);
-	}
-	
-	static function isLibraryLoaded(library:String):Bool
-	{
-		return Assets.getLibrary(library) != null;
-	}
-	#end*/
-	
 	override function destroy()
 	{
 		super.destroy();
-		
 		callbacks = null;
 	}
 	
@@ -257,6 +233,93 @@ class LoadingState extends MusicBeatState
 		});
 
 		return promise.future;
+	}
+
+	public static function zoomOut(from:String, onComplete:Void->Void)
+	{
+		createFadeOverlay();
+		fadeOverlay.alpha = 0;
+		FlxG.state.add(fadeOverlay);
+		FlxTween.tween(FlxG.camera, {
+			zoom: 0.5,
+			alpha: 0
+		}, 0.5, {
+			ease: FlxEase.quadIn,
+			onComplete: function(_) {
+				currentZoom = 0.5;
+				fromState = from;
+				destroyFadeOverlay();
+				onComplete();
+			}
+		});
+	}
+
+	public static function zoomIn(?onComplete:Void->Void)
+	{
+		FlxG.camera.zoom = currentZoom;
+		FlxG.camera.alpha = 0;
+		FlxTween.tween(FlxG.camera, {
+			zoom: 1.0,
+			alpha: 1
+		}, 0.35, {
+			ease: FlxEase.quadOut,
+			onComplete: function(_) {
+				if (onComplete != null) onComplete();
+			}
+		});
+	}
+
+	public static function enterState(initialZoom:Float = 0.5, targetZoom:Float = 1.0, duration:Float = 0.6)
+	{
+		createFadeOverlay();
+		fadeOverlay.alpha = 0;
+		FlxG.state.add(fadeOverlay);
+		FlxG.camera.zoom = initialZoom;
+		FlxG.camera.alpha = 1;
+		destroyFadeOverlay();
+		FlxTween.tween(FlxG.camera, {
+			zoom: targetZoom
+		}, duration, {
+			ease: FlxEase.quadOut
+		});
+	}
+	
+	public static function exitState(targetZoom:Float = 0.5, duration:Float = 0.35, onComplete:Void->Void = null)
+	{
+		createFadeOverlay();
+		fadeOverlay.alpha = 0;
+		FlxG.state.add(fadeOverlay);
+		destroyFadeOverlay();
+		FlxTween.tween(FlxG.camera, {
+			zoom: targetZoom
+		}, duration, {
+			ease: FlxEase.quadIn,
+			onComplete: function(_) {
+				if (onComplete != null) onComplete();
+			}
+		});
+	}
+	
+	public static function resetZoom()
+	{
+		FlxG.camera.zoom = 1.0;
+		FlxG.camera.alpha = 1.0;
+		currentZoom = 1.0;
+	}
+	
+	private static function createFadeOverlay()
+	{
+		fadeOverlay = new FlxSprite().makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		fadeOverlay.scrollFactor.set();
+		fadeOverlay.screenCenter();
+	}
+	
+	private static function destroyFadeOverlay()
+	{
+		if (fadeOverlay != null) {
+			fadeOverlay.destroy();
+			fadeOverlay = null;
+		}
 	}
 }
 
