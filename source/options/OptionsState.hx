@@ -4,7 +4,7 @@ import objects.GridUtil;
 
 import states.MainMenuState;
 import backend.StageData;
-import states.Transition;
+import states.LoadingState;
 
 import flixel.addons.display.FlxBackdrop;
 import flixel.tweens.FlxTween;
@@ -77,7 +77,7 @@ class OptionsState extends MusicBeatState
 
 		super.create();
 
-		Transition.enterState(0.3, 1.0, 0.9);
+		LoadingState.enterState(0.3, 1.0, 0.9);
 	}
 
 	override function closeSubState() {
@@ -111,8 +111,8 @@ class OptionsState extends MusicBeatState
         		FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
         		FlxG.sound.music.fadeIn(1, 0, 0.7);
     		}
-            Transition.zoomOut("options", function() {
-                Transition.fromState = "options";
+            LoadingState.zoomOut("options", function() {
+                LoadingState.fromState = "options";
                 MusicBeatState.switchState(new MainMenuState());
             });
 			super.update(elapsed);

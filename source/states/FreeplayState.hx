@@ -192,7 +192,7 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 		super.create();
 
-		Transition.enterState(0.5, 1.0, 0.6);
+		LoadingState.enterState(0.5, 1.0, 0.6);
 	}
 
 	override function closeSubState() {
@@ -301,29 +301,10 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-    		if (player.playingMusic)
-		    {
-		        // Detener la reproducción de música
-		        FlxG.sound.music.stop();
-		        destroyFreeplayVocals();
-		        FlxG.sound.music.volume = 0;
-		        instPlaying = -1;
-		        player.playingMusic = false;
-		        player.switchPlayMusic();
-
-		        FlxG.sound.playMusic(Paths.music('freeplay-freakyMenu'), 0);
-		        FlxTween.tween(FlxG.sound.music, {volume: 1}, 1);
-		        return;
-		    }
-    
-		    persistentUpdate = false;
-            if(colorTween != null) colorTween.cancel();
-            FlxG.sound.play(Paths.sound('cancelMenu'));
-            
-            Transition.zoomOut("freeplay", function() {
-                Transition.fromState = "freeplay";
-                MusicBeatState.switchState(new MainMenuState());
-            });
+    			LoadingState.zoomOut("freeplay", function() {
+    			LoadingState.fromState = "freeplay";
+    			MusicBeatState.switchState(new MainMenuState());
+    			});
 		}
 		if(FlxG.keys.justPressed.CONTROL && !player.playingMusic)
 		{
@@ -414,6 +395,7 @@ class FreeplayState extends MusicBeatState
 				super.update(elapsed);
 				return;
 			}
+			LoadingState.enterState();
 			LoadingState.loadAndSwitchState(new PlayState());
 
 			FlxG.sound.music.volume = 0;

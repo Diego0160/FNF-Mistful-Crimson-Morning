@@ -123,6 +123,8 @@ class AchievementsMenuState extends MusicBeatState
 		_changeSelection();
 		super.create();
 		
+		LoadingState.enterState(0.5, 1.0, 0.6);
+		
 		FlxG.camera.follow(camFollow, null, 9);
 		FlxG.camera.scroll.y = -FlxG.height;
 	}
@@ -204,10 +206,13 @@ class AchievementsMenuState extends MusicBeatState
 			}
 		}
 
-		if (controls.BACK) {
+		if (controls.BACK && !goingBack) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
 			goingBack = true;
+			LoadingState.zoomOut("achievements", function() {
+				LoadingState.fromState = "achievements";
+				MusicBeatState.switchState(new MainMenuState());
+			});
 		}
 		super.update(elapsed);
 	}

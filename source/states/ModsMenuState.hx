@@ -173,7 +173,12 @@ class ModsMenuState extends MusicBeatState
 			add(txt);
 
 			FlxG.autoPause = false;
+			_lastControllerMode = controls.controllerMode;
+
 			changeSelectedMod();
+			super.create();
+			
+			LoadingState.enterState(0.5, 1.0, 0.6);
 			return super.create();
 		}
 		//
@@ -295,6 +300,8 @@ class ModsMenuState extends MusicBeatState
 
 		changeSelectedMod();
 		super.create();
+		
+		LoadingState.enterState(0.5, 1.0, 0.6);
 	}
 	
 	var nextAttempt:Float = 1;
@@ -328,7 +335,12 @@ class ModsMenuState extends MusicBeatState
 				}
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 			}
-			else MusicBeatState.switchState(new MainMenuState());
+			else {
+				LoadingState.zoomOut("mods", function() {
+					LoadingState.fromState = "mods";
+					MusicBeatState.switchState(new MainMenuState());
+				});
+			}
 
 			persistentUpdate = false;
 			FlxG.autoPause = ClientPrefs.data.autoPause;

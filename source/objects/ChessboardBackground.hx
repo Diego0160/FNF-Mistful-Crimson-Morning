@@ -17,7 +17,7 @@ class ChessboardBackground extends FlxSprite
     private var color1:FlxColor;
     private var color2:FlxColor;
     
-    public function new(tileSize:Int = 50, color1:FlxColor = 0xFF222222, color2:FlxColor = 0xFF444444)
+    public function new(tileSize:Int = 50, color1:FlxColor = 0xFF222222, color2:FlxColor = 0xFF333333)
     {
         super(0, 0);
         this.tileSize = tileSize;
