@@ -46,15 +46,14 @@ class OptionsState extends MusicBeatState
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('optBG_Main'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
 		bg.screenCenter();
+		add(bg);
+		// Usar animación centralizada para el fondo
+		LoadingState.animateUIEntry(bg, "fade", 0, 0.2);
 
 		grid = GridUtil.createGrid();
         add(grid);
         GridUtil.fadeInGrid(grid);
-
-		bg.screenCenter();
-		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -65,19 +64,25 @@ class OptionsState extends MusicBeatState
 			optionText.screenCenter();
 			optionText.y += (100 * (i - (options.length / 2))) + 50;
 			grpOptions.add(optionText);
+			// Usar animación centralizada para las opciones
+			LoadingState.animateUIEntry(optionText, "bottom", 30, 0.6 + (i * 0.1));
 		}
 
 		selectorLeft = new Alphabet(0, 0, '>', true);
 		add(selectorLeft);
 		selectorRight = new Alphabet(0, 0, '<', true);
 		add(selectorRight);
+		// Usar animaciones centralizadas para los selectores
+		LoadingState.animateUIEntry(selectorLeft, "left", 50, 0.8);
+		LoadingState.animateUIEntry(selectorRight, "right", 50, 0.8);
 
 		changeSelection();
 		ClientPrefs.saveSettings();
 
 		super.create();
 
-		LoadingState.enterState(0.3, 1.0, 0.9);
+		// Configurar entrada estándar del menú
+		LoadingState.setupMenuStateEntry(bg, cast grpOptions.members);
 	}
 
 	override function closeSubState() {
@@ -93,9 +98,13 @@ class OptionsState extends MusicBeatState
 
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
+			// Usar animación centralizada para el efecto de cámara
+			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
+			// Usar animación centralizada para el efecto de cámara
+			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 
 		if (controls.BACK) {
@@ -107,15 +116,17 @@ class OptionsState extends MusicBeatState
 				FlxG.sound.music.volume = 0;
 			}
 			else 
-			if (!onPlayState) {
-        		FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-        		FlxG.sound.music.fadeIn(1, 0, 0.7);
-    		}
-            LoadingState.zoomOut("options", function() {
-                LoadingState.fromState = "options";
-                MusicBeatState.switchState(new MainMenuState());
-            });
-			super.update(elapsed);
+			{
+				if (!onPlayState) {
+					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+					FlxG.sound.music.fadeIn(1, 0, 0.7);
+				}
+				// Usar función centralizada para salir del estado
+				LoadingState.exitState(0.5, 0.35, function() {
+					MusicBeatState.switchState(new MainMenuState());
+				});
+			}
+			return;
 		}
 		else if (controls.ACCEPT) openSelectedSubstate(options[curSelected]);
 	}

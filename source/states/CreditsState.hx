@@ -56,6 +56,8 @@ class CreditsState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
+		// Usar animación centralizada para el fondo
+		LoadingState.animateBackgroundEntry(bg, 0.2);
 
 		// Initialize Conductor
 		Conductor.bpm = 128.0;
@@ -235,12 +237,15 @@ class CreditsState extends MusicBeatState
 		for (i in 0...creditsStuff.length)
 		{
 			var isSelectable:Bool = !unselectableCheck(i);
-			var optionText:Alphabet = new Alphabet(FlxG.width / 2, 300, creditsStuff[i][0], !isSelectable);
+			var optionText:Alphabet = new Alphabet(FlxG.width / 2, 180, creditsStuff[i][0], !isSelectable); // Cambiado de 300 a 180 para menos espaciado
 			optionText.isMenuItem = true;
 			optionText.targetY = i;
 			optionText.changeX = false;
 			optionText.snapToPosition();
 			grpOptions.add(optionText);
+			
+			// Usar animación centralizada para las opciones de créditos
+			LoadingState.animateUIEntry(optionText, "bottom", 30, 0.4 + (i * 0.05));
 
 			if(isSelectable) {
 				if(creditsStuff[i][5] != null)
@@ -264,6 +269,9 @@ class CreditsState extends MusicBeatState
 				// using a FlxGroup is too much fuss!
 				iconArray.push(icon);
 				add(icon);
+				
+				// Usar animación centralizada para los iconos
+				LoadingState.animateUIEntry(icon, "right", 40, 0.5 + (i * 0.05));
 				Mods.currentModDirectory = '';
 
 				if(curSelected == -1) curSelected = i;
@@ -285,6 +293,10 @@ class CreditsState extends MusicBeatState
 		//descText.borderSize = 2.4;
 		descBox.sprTracker = descText;
 		add(descText);
+		
+		// Usar animaciones centralizadas para el texto de descripción
+		LoadingState.animateUIEntry(descBox, "bottom", 50, 1.0);
+		LoadingState.animateTextEntry(descText, 0, -30, 1.1);
 
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
@@ -457,8 +469,10 @@ class CreditsState extends MusicBeatState
 
 			if(!unselectableCheck(bullShit-1)) {
 				item.alpha = 0.6;
+				item.color = FlxColor.GRAY;
 				if (item.targetY == 0) {
 					item.alpha = 1;
+					item.color = FlxColor.WHITE;
 				}
 			}
 		}

@@ -289,12 +289,14 @@ class LoadingState extends MusicBeatState
 		createFadeOverlay();
 		fadeOverlay.alpha = 0;
 		FlxG.state.add(fadeOverlay);
-		destroyFadeOverlay();
+		
+		FlxTween.tween(fadeOverlay, {alpha: 1}, duration * 0.5, {ease: FlxEase.quadIn});
 		FlxTween.tween(FlxG.camera, {
 			zoom: targetZoom
 		}, duration, {
 			ease: FlxEase.quadIn,
 			onComplete: function(_) {
+				destroyFadeOverlay();
 				if (onComplete != null) onComplete();
 			}
 		});
@@ -306,6 +308,225 @@ class LoadingState extends MusicBeatState
 		FlxG.camera.alpha = 1.0;
 		currentZoom = 1.0;
 	}
+	
+	// ===== SISTEMA CENTRALIZADO DE ANIMACIONES Y TRANSICIONES =====
+	
+	/**
+	 * Animaciones de entrada para fondos
+	 */
+	public static function animateBackgroundEntry(bg:FlxSprite, ?delay:Float = 0.2, ?duration:Float = 0.8)
+	{
+		bg.alpha = 0;
+		bg.scale.set(1.1, 1.1);
+		FlxTween.tween(bg, {alpha: 1}, duration, {ease: FlxEase.quadOut, startDelay: delay});
+		FlxTween.tween(bg.scale, {x: 1, y: 1}, duration + 0.2, {ease: FlxEase.quadOut, startDelay: delay});
+	}
+	
+	/**
+	 * Animaciones de entrada para texto con efecto de rebote
+	 */
+	public static function animateTextEntry(text:FlxSprite, ?offsetX:Float = 0, ?offsetY:Float = 0, ?delay:Float = 0.6)
+	{
+		text.alpha = 0;
+		var originalX = text.x;
+		var originalY = text.y;
+		text.x += offsetX;
+		text.y += offsetY;
+		FlxTween.tween(text, {alpha: 1, x: originalX, y: originalY}, 0.6, {ease: FlxEase.backOut, startDelay: delay});
+	}
+	
+	/**
+	 * Animaciones escalonadas para elementos de menú
+	 */
+	public static function animateMenuItems(items:Array<FlxSprite>, ?baseDelay:Float = 0.5, ?itemDelay:Float = 0.1)
+	{
+		for (i in 0...items.length) {
+			var item = items[i];
+			item.alpha = 0;
+			var originalX = item.x;
+			item.x -= 100;
+			FlxTween.tween(item, {alpha: 1, x: originalX}, 0.6, {
+				ease: FlxEase.backOut, 
+				startDelay: baseDelay + (i * itemDelay)
+			});
+		}
+	}
+	
+	/**
+	 * Efecto de pulsación para elementos interactivos
+	 */
+	public static function animatePulse(sprite:FlxSprite, ?scale:Float = 1.05, ?duration:Float = 1.5)
+	{
+		FlxTween.tween(sprite.scale, {x: scale, y: scale}, duration, {
+			ease: FlxEase.sineInOut, 
+			type: PINGPONG
+		});
+	}
+	
+	/**
+	 * Efecto de flotación para elementos decorativos
+	 */
+	public static function animateFloat(sprite:FlxSprite, ?offsetY:Float = 10, ?duration:Float = 2.5)
+	{
+		var originalY = sprite.y;
+		FlxTween.tween(sprite, {y: originalY + offsetY}, duration, {
+			ease: FlxEase.sineInOut, 
+			type: PINGPONG
+		});
+	}
+	
+	/**
+	 * Animación de entrada elástica para logos
+	 */
+	public static function animateLogoEntry(logo:FlxSprite, ?delay:Float = 0.3, ?offsetY:Float = 50)
+	{
+		logo.alpha = 0;
+		var originalY = logo.y;
+		logo.y -= offsetY;
+		FlxTween.tween(logo, {alpha: 1, y: originalY}, 1.2, {
+			ease: FlxEase.elasticOut, 
+			startDelay: delay
+		});
+	}
+	
+	/**
+	 * Efecto de escala para botones al hacer hover/click
+	 */
+	public static function animateButtonPress(button:FlxSprite, ?onComplete:Void->Void)
+	{
+		FlxTween.tween(button.scale, {x: 1.2, y: 1.2}, 0.1, {
+			ease: FlxEase.quadOut, 
+			onComplete: function(twn:FlxTween) {
+				FlxTween.tween(button.scale, {x: 1, y: 1}, 0.2, {
+					ease: FlxEase.backOut,
+					onComplete: function(_) if (onComplete != null) onComplete()
+				});
+			}
+		});
+	}
+	
+	/**
+	 * Zoom de cámara suave para navegación
+	 */
+	public static function animateCameraZoom(?targetZoom:Float = 1.05, ?duration:Float = 0.3)
+	{
+		FlxTween.cancelTweensOf(FlxG.camera);
+		FlxTween.tween(FlxG.camera, {zoom: targetZoom}, duration, {ease: FlxEase.quadOut});
+		FlxTween.tween(FlxG.camera, {zoom: 1}, duration, {ease: FlxEase.quadOut, startDelay: duration});
+	}
+	
+	/**
+	 * Transición de color suave para fondos
+	 */
+	public static function animateColorTransition(sprite:FlxSprite, targetColor:Int, ?duration:Float = 1.0, ?onComplete:Void->Void):FlxTween
+	{
+		return FlxTween.color(sprite, duration, sprite.color, targetColor, {
+			onComplete: function(twn:FlxTween) {
+				if (onComplete != null) onComplete();
+			}
+		});
+	}
+	
+	/**
+	 * Animación de entrada para elementos de UI con fade y movimiento
+	 */
+	public static function animateUIEntry(element:FlxSprite, ?direction:String = "bottom", ?distance:Float = 26, ?delay:Float = 0.0)
+	{
+		element.alpha = 0;
+		var originalX = element.x;
+		var originalY = element.y;
+		
+		switch (direction) {
+			case "top":
+				element.y -= distance;
+			case "bottom":
+				element.y += distance;
+			case "left":
+				element.x -= distance;
+			case "right":
+				element.x += distance;
+		}
+		
+		FlxTween.tween(element, {alpha: 1, x: originalX, y: originalY}, 0.5, {
+			ease: FlxEase.backOut, 
+			startDelay: delay
+		});
+	}
+	
+	/**
+	 * Efecto de entrada coordinada para múltiples elementos
+	 */
+	public static function animateCoordinatedEntry(elements:Array<{sprite:FlxSprite, delay:Float, ?direction:String, ?distance:Float}>)
+	{
+		for (element in elements) {
+			animateUIEntry(
+				element.sprite, 
+				element.direction != null ? element.direction : "bottom",
+				element.distance != null ? element.distance : 26,
+				element.delay
+			);
+		}
+	}
+	
+	/**
+	 * Animación de salida suave para elementos
+	 */
+	public static function animateExit(sprite:FlxSprite, ?direction:String = "fade", ?duration:Float = 0.3, ?onComplete:Void->Void)
+	{
+		switch (direction) {
+			case "fade":
+				FlxTween.tween(sprite, {alpha: 0}, duration, {
+					ease: FlxEase.quadOut,
+					onComplete: function(_) if (onComplete != null) onComplete()
+				});
+			case "scale":
+				FlxTween.tween(sprite.scale, {x: 0, y: 0}, duration, {
+					ease: FlxEase.backIn,
+					onComplete: function(_) if (onComplete != null) onComplete()
+				});
+			case "slide":
+				FlxTween.tween(sprite, {x: sprite.x - 100, alpha: 0}, duration, {
+					ease: FlxEase.quadIn,
+					onComplete: function(_) if (onComplete != null) onComplete()
+				});
+		}
+	}
+	
+	/**
+	 * Efecto de transición de imagen de fondo
+	 */
+	public static function animateBackgroundTransition(bgSprite:FlxSprite, newImagePath:String, ?onComplete:Void->Void)
+	{
+		FlxTween.tween(bgSprite, {alpha: 0}, 0.2, {
+			ease: FlxEase.quadOut,
+			onComplete: function(twn:FlxTween) {
+				bgSprite.loadGraphic(Paths.image(newImagePath));
+				FlxTween.tween(bgSprite, {alpha: 1}, 0.3, {
+					ease: FlxEase.quadOut,
+					onComplete: function(_) if (onComplete != null) onComplete()
+				});
+			}
+		});
+	}
+	
+	/**
+	 * Configuración de entrada estándar para estados de menú
+	 */
+	public static function setupMenuStateEntry(bg:FlxSprite, ?elements:Array<FlxSprite>)
+	{
+		// Animar fondo
+		animateBackgroundEntry(bg);
+		
+		// Animar elementos si se proporcionan
+		if (elements != null) {
+			animateMenuItems(elements);
+		}
+		
+		// Zoom inicial de cámara
+		enterState();
+	}
+	
+	// ===== FUNCIONES AUXILIARES =====
 	
 	private static function createFadeOverlay()
 	{

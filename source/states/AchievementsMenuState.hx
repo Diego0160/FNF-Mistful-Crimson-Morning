@@ -3,6 +3,7 @@ package states;
 import flixel.FlxObject;
 import flixel.util.FlxSort;
 import objects.Bar;
+import states.LoadingState;
 
 #if ACHIEVEMENTS_ALLOWED
 class AchievementsMenuState extends MusicBeatState
@@ -123,7 +124,8 @@ class AchievementsMenuState extends MusicBeatState
 		_changeSelection();
 		super.create();
 		
-		LoadingState.enterState(0.5, 1.0, 0.6);
+		// Configurar entrada estándar del menú
+		LoadingState.setupMenuStateEntry();
 		
 		FlxG.camera.follow(camFollow, null, 9);
 		FlxG.camera.scroll.y = -FlxG.height;

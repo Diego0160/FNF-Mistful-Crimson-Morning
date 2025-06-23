@@ -6,6 +6,9 @@ import backend.Song;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
 
 import objects.MenuItem;
 import objects.MenuCharacter;
@@ -160,6 +163,10 @@ class StoryMenuState extends MusicBeatState
 		add(bgYellow);
 		add(bgSprite);
 		add(grpWeekCharacters);
+		
+		// Usar animaciones centralizadas para fondos
+		LoadingState.animateBackgroundEntry(bgYellow, 0.2);
+		LoadingState.animateBackgroundEntry(bgSprite, 0.4);
 
 		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
 		tracksSprite.antialiasing = ClientPrefs.data.antialiasing;
@@ -173,6 +180,11 @@ class StoryMenuState extends MusicBeatState
 		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
+		
+		// Usar animaciones centralizadas para textos
+		LoadingState.animateTextEntry(scoreText, 0, -30, 0.6);
+		LoadingState.animateTextEntry(txtWeekTitle, -50, 0, 0.7);
+		LoadingState.animateTextEntry(txtTracklist, 50, 0, 0.8);
 
 		changeWeek();
 		changeDifficulty();
@@ -204,12 +216,16 @@ class StoryMenuState extends MusicBeatState
 			{
 				changeWeek(-1);
 				FlxG.sound.play(Paths.sound('scrollMenu'));
+				// Usar efecto de cámara centralizado
+				LoadingState.animateCameraZoom();
 			}
 
 			if (downP)
 			{
 				changeWeek(1);
 				FlxG.sound.play(Paths.sound('scrollMenu'));
+				// Usar efecto de cámara centralizado
+				LoadingState.animateCameraZoom();
 			}
 
 			if(FlxG.mouse.wheel != 0)
@@ -229,11 +245,15 @@ class StoryMenuState extends MusicBeatState
 			else
 				leftArrow.animation.play('idle');
 
-			if (controls.UI_RIGHT_P)
+			if (controls.UI_RIGHT_P) {
 				changeDifficulty(1);
-			else if (controls.UI_LEFT_P)
+				// Usar efecto de escala centralizado
+				LoadingState.animateButtonPress(rightArrow);
+			} else if (controls.UI_LEFT_P) {
 				changeDifficulty(-1);
-			else if (upP || downP)
+				// Usar efecto de escala centralizado
+				LoadingState.animateButtonPress(leftArrow);
+			} else if (upP || downP)
 				changeDifficulty();
 
 			if(FlxG.keys.justPressed.CONTROL)
@@ -257,8 +277,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			LoadingState.zoomOut("story", function() {
-				LoadingState.fromState = "story";
+			LoadingState.exitState(0.5, 0.35, function() {
 				MusicBeatState.switchState(new MainMenuState());
 			});
 		}
@@ -362,10 +381,16 @@ class StoryMenuState extends MusicBeatState
 			sprDifficulty.y = leftArrow.y - 15;
 
 			if(tweenDifficulty != null) tweenDifficulty.cancel();
-			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {onComplete: function(twn:FlxTween)
-			{
-				tweenDifficulty = null;
-			}});
+			// Efecto mejorado para cambio de dificultad
+			sprDifficulty.scale.set(1.2, 1.2);
+			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.15, {
+				ease: FlxEase.backOut,
+				onComplete: function(twn:FlxTween) {
+					tweenDifficulty = null;
+				}
+			});
+			// Usar animación centralizada para el botón de dificultad
+			LoadingState.animateButtonPress(sprDifficulty);
 		}
 		lastDifficultyName = diff;
 
@@ -399,10 +424,19 @@ class StoryMenuState extends MusicBeatState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curWeek;
-			if (item.targetY == Std.int(0) && unlocked)
-				item.alpha = 1;
-			else
-				item.alpha = 0.6;
+			var targetAlpha:Float = (item.targetY == Std.int(0) && unlocked) ? 1 : 0.6;
+			
+			// Usar animaciones centralizadas para los elementos
+			LoadingState.animateUIEntry(item, "left", 100, 0.0);
+			item.alpha = targetAlpha;
+			
+			// Efecto de escala para el elemento seleccionado
+			if (item.targetY == Std.int(0) && unlocked) {
+				LoadingState.animateButtonPress(item);
+				item.scale.set(1.05, 1.05);
+			} else {
+				item.scale.set(1, 1);
+			}
 			bullShit++;
 		}
 
@@ -411,7 +445,10 @@ class StoryMenuState extends MusicBeatState
 		if(assetName == null || assetName.length < 1) {
 			bgSprite.visible = false;
 		} else {
+			// Usar animación centralizada para la transición del fondo
+			LoadingState.animateExit(bgSprite, "fade", 0.3);
 			bgSprite.loadGraphic(Paths.image('menubackgrounds/menu_' + assetName));
+			LoadingState.animateBackgroundEntry(bgSprite, 0.0, 0.5);
 		}
 		PlayState.storyWeek = curWeek;
 

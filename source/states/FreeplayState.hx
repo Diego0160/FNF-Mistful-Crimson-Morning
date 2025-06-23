@@ -15,6 +15,7 @@ import flixel.math.FlxMath;
 import flixel.addons.display.FlxBackdrop;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import states.LoadingState;
 
 class FreeplayState extends MusicBeatState
 {
@@ -96,6 +97,8 @@ class FreeplayState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
+		// Usar animación centralizada para el fondo
+		LoadingState.animateUIEntry(bg, "bottom", 26, 0.2);
 
 		grid = GridUtil.createGrid();
         add(grid);
@@ -112,6 +115,8 @@ class FreeplayState extends MusicBeatState
     	watermark.x = FlxG.width - watermark.width;
     	watermark.y = FlxG.height - watermark.height - 25;
     	add(watermark);
+		// Usar animación centralizada para la marca de agua
+		LoadingState.animateUIEntry(watermark, "bottom", 26, 1.0);
 
 		for (i in 0...songs.length)
 		{
@@ -126,6 +131,9 @@ class FreeplayState extends MusicBeatState
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
+			// Usar animaciones centralizadas para las canciones
+			LoadingState.animateUIEntry(songText, "left", 50, 0.3 + (i * 0.02));
+			LoadingState.animateUIEntry(icon, "right", 30, 0.4 + (i * 0.02));
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
 			songText.visible = songText.active = songText.isMenuItem = false;
@@ -144,15 +152,22 @@ class FreeplayState extends MusicBeatState
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
+
 		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
-		scoreBG.alpha = 0.6;
+		scoreBG.alpha = 0;
 		add(scoreBG);
 
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
+
 		add(diffText);
 
 		add(scoreText);
+		
+		// Usar animaciones centralizadas para elementos de UI
+		LoadingState.animateTextEntry(scoreText, 0, -30, 0.8);
+		LoadingState.animateTextEntry(diffText, 0, -30, 0.9);
+		LoadingState.animateUIEntry(scoreBG, "bottom", 50, 0.8);
 
 		missingTextBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		missingTextBG.alpha = 0.6;
@@ -173,7 +188,7 @@ class FreeplayState extends MusicBeatState
 		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(lastDifficultyName)));
 
 		bottomBG = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
-		bottomBG.alpha = 0.6;
+
 		add(bottomBG);
 		
 
@@ -183,7 +198,12 @@ class FreeplayState extends MusicBeatState
 		bottomText = new FlxText(bottomBG.x, bottomBG.y + 4, FlxG.width, leText, size);
 		bottomText.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER);
 		bottomText.scrollFactor.set();
+
 		add(bottomText);
+		
+		// Usar animaciones centralizadas para elementos inferiores
+		LoadingState.animateUIEntry(bottomBG, "bottom", 50, 1.2);
+		LoadingState.animateTextEntry(bottomText, 0, -30, 1.3);
 		
 		player = new MusicPlayer(this);
 		add(player);
@@ -192,7 +212,8 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 		super.create();
 
-		LoadingState.enterState(0.5, 1.0, 0.6);
+		// Configurar entrada estándar del menú
+		LoadingState.setupMenuStateEntry(bg, cast grpSongs.members);
 	}
 
 	override function closeSubState() {

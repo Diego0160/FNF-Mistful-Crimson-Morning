@@ -6,6 +6,10 @@ import backend.Mods;
 import flixel.ui.FlxButton;
 import flixel.FlxBasic;
 import flixel.graphics.FlxGraphic;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
+import states.LoadingState;
 import flash.geom.Rectangle;
 import lime.utils.Assets;
 import haxe.Json;
@@ -72,9 +76,12 @@ class ModsMenuState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
+		// Usar animación centralizada para el fondo
+		LoadingState.animateBackgroundEntry(bg, 0.2);
 
 		bgList = FlxSpriteUtil.drawRoundRect(new FlxSprite(40, 40).makeGraphic(340, 440, FlxColor.TRANSPARENT), 0, 0, 340, 440, 15, 15, FlxColor.BLACK);
-		bgList.alpha = 0.6;
+		// Usar animación centralizada para la lista de mods
+		LoadingState.animateUIElementEntry(bgList, 0.4);
 
 		modsGroup = new FlxTypedGroup<ModItem>();
 
@@ -178,7 +185,8 @@ class ModsMenuState extends MusicBeatState
 			changeSelectedMod();
 			super.create();
 			
-			LoadingState.enterState(0.5, 1.0, 0.6);
+			// Configurar entrada estándar del menú
+			LoadingState.setupMenuStateEntry();
 			return super.create();
 		}
 		//
