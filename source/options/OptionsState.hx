@@ -48,7 +48,6 @@ class OptionsState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.screenCenter();
 		add(bg);
-		// Usar animación centralizada para el fondo
 		LoadingState.animateUIEntry(bg, "fade", 0, 0.2);
 
 		grid = GridUtil.createGrid();
@@ -64,7 +63,7 @@ class OptionsState extends MusicBeatState
 			optionText.screenCenter();
 			optionText.y += (100 * (i - (options.length / 2))) + 50;
 			grpOptions.add(optionText);
-			// Usar animación centralizada para las opciones
+
 			LoadingState.animateUIEntry(optionText, "bottom", 30, 0.6 + (i * 0.1));
 		}
 
@@ -75,7 +74,6 @@ class OptionsState extends MusicBeatState
 		selectorRight.alpha = 0;
 		add(selectorRight);
 
-		// Hacer visibles los selectores después de 0.8 segundos
 		FlxTween.tween(selectorLeft, {alpha: 1}, 0.4, {startDelay: 0.8, ease: FlxEase.quartOut});
 		FlxTween.tween(selectorRight, {alpha: 1}, 0.4, {startDelay: 0.8, ease: FlxEase.quartOut});
 
@@ -84,7 +82,6 @@ class OptionsState extends MusicBeatState
 
 		super.create();
 
-		// Configurar entrada estándar del menú
 		LoadingState.setupMenuStateEntry(bg, cast grpOptions.members);
 	}
 
@@ -101,12 +98,10 @@ class OptionsState extends MusicBeatState
 
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
-			// Usar animación centralizada para el efecto de cámara
 			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
-			// Usar animación centralizada para el efecto de cámara
 			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 
@@ -124,7 +119,6 @@ class OptionsState extends MusicBeatState
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(1, 0, 0.7);
 				}
-				// Usar función centralizada para salir del estado
 				LoadingState.exitState(0.5, 0.35, function() {
 					MusicBeatState.switchState(new MainMenuState());
 				});
