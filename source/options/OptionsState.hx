@@ -18,6 +18,11 @@ class OptionsState extends MusicBeatState
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 	public static var onPlayState:Bool = false;
+	
+	var bpmTimer:Float = 0;
+	var bpmInterval:Float = 60 / 128; // 128 BPM to match offsetSong.ogg
+	var bpmCounter:Int = 0;
+	var beatTriggered:Bool = false; // Prevent multiple beats per frame
 
 	function openSelectedSubstate(label:String) {
 		switch(label) {
@@ -96,13 +101,29 @@ class OptionsState extends MusicBeatState
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
+		bpmTimer += elapsed;
+		if (bpmTimer >= bpmInterval && !beatTriggered) {
+			// Preserve excess time for better accuracy
+			bpmTimer -= bpmInterval;
+			bpmCounter++;
+			beatTriggered = true; // Mark beat as triggered this frame
+			if (bpmCounter == 2)
+			{
+				LoadingState.animateCameraZoom(1.05, 0.25);
+			}
+			if (bpmCounter >= 4)
+			{
+				bpmCounter = 0;
+			}
+		} else if (bpmTimer < bpmInterval) {
+			beatTriggered = false; // Reset flag when timer is below interval
+		}
+		
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
-			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
-			LoadingState.animateCameraZoom(1.05, 0.3);
 		}
 
 		if (controls.BACK) {
