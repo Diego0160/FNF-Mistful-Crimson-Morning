@@ -69,12 +69,15 @@ class OptionsState extends MusicBeatState
 		}
 
 		selectorLeft = new Alphabet(0, 0, '>', true);
+		selectorLeft.alpha = 0;
 		add(selectorLeft);
 		selectorRight = new Alphabet(0, 0, '<', true);
+		selectorRight.alpha = 0;
 		add(selectorRight);
-		// Usar animaciones centralizadas para los selectores
-		LoadingState.animateUIEntry(selectorLeft, "left", 50, 0.8);
-		LoadingState.animateUIEntry(selectorRight, "right", 50, 0.8);
+
+		// Hacer visibles los selectores después de 0.8 segundos
+		FlxTween.tween(selectorLeft, {alpha: 1}, 0.4, {startDelay: 0.8, ease: FlxEase.quartOut});
+		FlxTween.tween(selectorRight, {alpha: 1}, 0.4, {startDelay: 0.8, ease: FlxEase.quartOut});
 
 		changeSelection();
 		ClientPrefs.saveSettings();
