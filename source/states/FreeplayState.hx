@@ -97,8 +97,9 @@ class FreeplayState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
-		// Usar animación centralizada para el fondo
-		LoadingState.animateUIEntry(bg, "bottom", 26, 0.2);
+		// Animación simple para el fondo
+		bg.alpha = 0;
+		FlxTween.tween(bg, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
 
 		grid = GridUtil.createGrid();
         add(grid);
@@ -115,8 +116,9 @@ class FreeplayState extends MusicBeatState
     	watermark.x = FlxG.width - watermark.width;
     	watermark.y = FlxG.height - watermark.height - 25;
     	add(watermark);
-		// Usar animación centralizada para la marca de agua
-		LoadingState.animateUIEntry(watermark, "bottom", 26, 1.0);
+		// Animación simple para la marca de agua
+		watermark.alpha = 0;
+		FlxTween.tween(watermark, {alpha: 1}, 0.8, {ease: FlxEase.quadOut, startDelay: 0.3});
 
 		for (i in 0...songs.length)
 		{
@@ -131,9 +133,11 @@ class FreeplayState extends MusicBeatState
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
-			// Usar animaciones centralizadas para las canciones
-			LoadingState.animateUIEntry(songText, "left", 50, 0.3 + (i * 0.02));
-			LoadingState.animateUIEntry(icon, "right", 30, 0.4 + (i * 0.02));
+			// Animaciones simples para las canciones
+			songText.alpha = 0;
+			icon.alpha = 0;
+			FlxTween.tween(songText, {alpha: 1}, 0.4, {ease: FlxEase.quadOut, startDelay: 0.3 + (i * 0.02)});
+			FlxTween.tween(icon, {alpha: 1}, 0.4, {ease: FlxEase.quadOut, startDelay: 0.4 + (i * 0.02)});
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
 			songText.visible = songText.active = songText.isMenuItem = false;
@@ -164,10 +168,13 @@ class FreeplayState extends MusicBeatState
 
 		add(scoreText);
 		
-		// Usar animaciones centralizadas para elementos de UI
-		LoadingState.animateTextEntry(scoreText, 0, -30, 0.8);
-		LoadingState.animateTextEntry(diffText, 0, -30, 0.9);
-		LoadingState.animateUIEntry(scoreBG, "bottom", 50, 0.8);
+		// Animaciones simples para elementos de UI
+		scoreText.alpha = 0;
+		diffText.alpha = 0;
+		scoreBG.alpha = 0;
+		FlxTween.tween(scoreText, {alpha: 1}, 0.5, {ease: FlxEase.quadOut, startDelay: 0.8});
+		FlxTween.tween(diffText, {alpha: 1}, 0.5, {ease: FlxEase.quadOut, startDelay: 0.9});
+		FlxTween.tween(scoreBG, {alpha: 0.6}, 0.5, {ease: FlxEase.quadOut, startDelay: 0.8});
 
 		missingTextBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		missingTextBG.alpha = 0.6;
@@ -201,9 +208,11 @@ class FreeplayState extends MusicBeatState
 
 		add(bottomText);
 		
-		// Usar animaciones centralizadas para elementos inferiores
-		LoadingState.animateUIEntry(bottomBG, "bottom", 50, 1.2);
-		LoadingState.animateTextEntry(bottomText, 0, -30, 1.3);
+		// Animaciones simples para elementos inferiores
+		bottomBG.alpha = 0;
+		bottomText.alpha = 0;
+		FlxTween.tween(bottomBG, {alpha: 1}, 0.5, {ease: FlxEase.quadOut, startDelay: 1.2});
+		FlxTween.tween(bottomText, {alpha: 1}, 0.5, {ease: FlxEase.quadOut, startDelay: 1.3});
 		
 		player = new MusicPlayer(this);
 		add(player);
@@ -212,8 +221,9 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 		super.create();
 
-		// Configurar entrada estándar del menú
-		LoadingState.setupMenuStateEntry(bg, cast grpSongs.members);
+		// Inicialización simple sin LoadingState
+		changeSelection();
+		updateTexts();
 	}
 
 	override function closeSubState() {
