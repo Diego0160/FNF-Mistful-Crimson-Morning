@@ -255,7 +255,7 @@ class TitleState extends MusicBeatState
 		add(gfDance);
 		add(logoBl);
 		
-		// Usar animación centralizada para GF
+		// Use centralized animation for GF
 		LoadingState.animateUIEntry(gfDance, "bottom", 50, 0.6);
 		if(swagShader != null)
 		{
@@ -290,7 +290,7 @@ class TitleState extends MusicBeatState
 		
 		add(titleText);
 		
-		// Usar animaciones centralizadas para el texto del título
+		// Use centralized animation for title text
 		LoadingState.animateTextEntry(titleText, 0, -50, 1.0);
 		LoadingState.animatePulse(titleText, 1.05, 2.0);
 
@@ -299,7 +299,7 @@ class TitleState extends MusicBeatState
 		logo.screenCenter();
 		// add(logo);
 
-		// Usar animaciones centralizadas para el logo
+		// Use centralized animation for logo
 		LoadingState.animateLogoEntry(logoBl, 0.3, 30);
 		LoadingState.animateFloat(logoBl, 10, 3.0);
 
@@ -312,8 +312,6 @@ class TitleState extends MusicBeatState
 
 		credTextShit = new Alphabet(0, 0, "", true);
 		credTextShit.screenCenter();
-
-		// credTextShit.alignment = CENTER;
 
 		credTextShit.visible = false;
 
@@ -417,11 +415,11 @@ class TitleState extends MusicBeatState
 				
 				if(titleText != null) titleText.animation.play('press');
 
-				// Usar efectos centralizados al presionar Enter
+				// Use centered effects when pressing Enter
 				FlxG.camera.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 				
-				// Efectos coordinados usando el sistema centralizado
+				// Coordinated effects using the centralized system
 				LoadingState.animateButtonPress(logoBl);
 				LoadingState.animateExit(gfDance, "fade", 0.5);
 				LoadingState.animateButtonPress(titleText);
@@ -439,7 +437,7 @@ class TitleState extends MusicBeatState
 				        if (mustUpdate) {
 				            MusicBeatState.switchState(new OutdatedState());
 				        } else {
-				            // Usar transición centralizada
+				            // Use centralized transition
 				        LoadingState.exitState(0.5, 0.35, function() {
 				            MusicBeatState.switchState(new MainMenuState());
 				        });
@@ -556,7 +554,7 @@ class TitleState extends MusicBeatState
 
 		if(logoBl != null) {
 			logoBl.animation.play('bump', true);
-			// Efecto de zoom sutil en cada beat
+			// Subtle zoom effect on each beat
 			FlxTween.cancelTweensOf(logoBl.scale);
 			logoBl.scale.set(1.05, 1.05);
 			FlxTween.tween(logoBl.scale, {x: 1, y: 1}, 0.3, {ease: FlxEase.backOut});
@@ -569,13 +567,13 @@ class TitleState extends MusicBeatState
 			else
 				gfDance.animation.play('danceLeft');
 			
-			// Efecto de rebote sutil en GF
+			// Subtle zoom effect on GF
 			FlxTween.cancelTweensOf(gfDance.scale);
 			gfDance.scale.set(1.02, 1.02);
 			FlxTween.tween(gfDance.scale, {x: 1, y: 1}, 0.2, {ease: FlxEase.quadOut});
 		}
 		
-		// Efecto de cámara sutil en beats específicos
+		// Subtle zoom effect on specific beats
 		if (curBeat % 4 == 0 && skippedIntro) {
 			FlxTween.cancelTweensOf(FlxG.camera);
 			FlxG.camera.zoom = 1.02;
