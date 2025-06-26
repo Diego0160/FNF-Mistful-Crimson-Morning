@@ -111,9 +111,7 @@ _____________________________________
 
 # Friday Night Funkin' [Mic'd Up Engine](https://github.com/Verwex/Funkin-Mic-d-Up-SC)
 
-<p align="center">
-	<a href="https://gamebanana.com/gamefiles/15309" target="_blank"><img src="/art/FNF Logo.png" alt="Logo" width="658.5px" height="487.5px"></a>
-</p>
+![ExreplayabilityEngineLogo](https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/FNF%20Logo.png)
 
 This is the repository for Friday Night Funkin: Mic'd Up, previously named FNF: EX Replayability, a non-profit modification of Friday Night Funkin'.
 
@@ -136,16 +134,16 @@ Go support the original repository for the game [here](https://github.com/ninjam
 	<tr>
 	<td>
 		<a href='https://twitter.com/ninja_muffin99'><b>NinjaMuffin99</b></a><br>
-		<img src="art/Ninja.png" alt="NinjaMuffin99" width="175" height="175">
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Ninja.png" alt="NinjaMuffin99" width="175" height="175">
 	</td>
 	<td>
 		<a href='https://twitter.com/phantomarcade3k'><b>PhantomArcade3K</b></a> and <a href='https://twitter.com/evilsk8r'><b>Evilsk8r</b></a><br>
-		<img src="art/Phantom.png" alt="PhantomArcade3K" width="175" height="175">
-		<img src="art/Evil.png" alt="Evilsk8r" width="175" height="175"><br>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Phantom.png" alt="PhantomArcade3K" width="175" height="175">
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Evil.png" alt="Evilsk8r" width="175" height="175"><br>
 	</td>
 	<td>
 		<a href='https://twitter.com/kawaisprite'><b>Kawaisprite</b></a><br>
-		<img src="/art/Kawai.png" alt="Kawaisprite" width="175" height="175">
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Kawai.png" alt="Kawaisprite" width="175" height="175">
 	</tr>
 </table>
 
@@ -160,25 +158,25 @@ Go support the original repository for the game [here](https://github.com/ninjam
 	<tr>
 	<td>
 		<a href='https://twitter.com/Vershift'><b>Verwex</b><br>
-		<img src="/art/Verwex.png" alt="Verwex" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Verwex.png" alt="Verwex" width="80" height="80"></a>
 	</td>
 	<td>
 		<a href='https://twitter.com/kadedeveloper'><b>KadeDev</b></a>, <a href='https://steamcommunity.com/profiles/76561198353865795'><b>Ash237</b></a>, <a href='https://www.youtube.com/channel/UCqBMDBboJaBHLoxO0H3EBgw'><b>Haya</b></a>, <a href='https://twitter.com/TentaRJ'><b>TentaRJ</b></a> and <a href='https://twitter.com/helpme_thebigt'><b>Rozebud</b></a><br>
-		<img src="/art/Kade.png" alt="KadeDeveloper" width="80" height="80"></a>
-		<img src="/art/Ash.png" alt="Ash237" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Kade.png" alt="KadeDeveloper" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Ash.png" alt="Ash237" width="80" height="80"></a>
 		<img src="/art/Haya.png" alt="Haya" width="80" height="80"></a>
-		<img src="/art/TentaRJ.png" alt="TentaRJ" width="80" height="80"></a>
-		<img src="/art/Rozebud.png" alt="Rozebud" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/TentaRJ.png" alt="TentaRJ" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Rozebud.png" alt="Rozebud" width="80" height="80"></a>
 	</td>
 	<td>
 		<a href='https://twitter.com/Sector0003'><b>Sector03</b></a><br>
-		<img src="/art/Sector03.png" alt="Sector03" width="80" height="80"></a>
+		<img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/Sector03.png" alt="Sector03" width="80" height="80"></a>
 	</tr>
 </table>
 </table>
 
 <p align="center">
-	<a href="https://ninja-muffin24.itch.io/funkin"><img src="/art/preloaderArt.png" width"658.5px" height="369.75px"></a>
+	<a href="https://ninja-muffin24.itch.io/funkin"><img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/preloaderArt.png" width"658.5px" height="369.75px"></a>
 </p>
 
 **This mod was made with love to Friday Night Funkin' and its community. Extra love to the team behind it. 💖**
@@ -186,7 +184,7 @@ Go support the original repository for the game [here](https://github.com/ninjam
 # Mods ([skip](#Compiling))
 
 <p align="center">
-	<a href="https://github.com/Verwex/Mic-d-Up-PRIVATE/blob/main/art/polymodNo.png" target="_blank"><img src="/art/polymodNo.png"></a>
+	<a href="https://github.com/Verwex/Mic-d-Up-PRIVATE/blob/main/art/polymodNo.png" target="_blank"><img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/polymodNo.png"></a>
 </p>
 
 In order to load in mods, it HAS to be in the mainMods/_append folder. 
@@ -218,7 +216,7 @@ If you just want to download and play the mod normally, you can click [here to g
 # Installing the Required Programs
 
 <p align="center">
-	<a href="https://haxe.org/documentation/introduction/" target="_blank"><img src="/art/haxeLogo.png"></a>
+	<a href="https://haxe.org/documentation/introduction/" target="_blank"><img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/haxeLogo.png"></a>
 </p>
 
 First you need to install Haxe and HaxeFlixel.
@@ -273,7 +271,7 @@ You should be good from there! Now, onto compiling!
 # Compiling the Mod
 
 <p align="center">
-	<a href="https://lime-ml.readthedocs.io/en/latest/" target="_blank"><img src="/art/limeLogo.png"></a>
+	<a href="https://lime-ml.readthedocs.io/en/latest/" target="_blank"><img src="https://raw.githubusercontent.com/Verwex/Funkin-Mic-d-Up-SC/stable/art/limeLogo.png"></a>
 </p>
 
 ## HTML Building:
