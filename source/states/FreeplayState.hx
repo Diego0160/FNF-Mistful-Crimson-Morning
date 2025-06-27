@@ -97,7 +97,6 @@ class FreeplayState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
-		// Animación simple para el fondo
 		bg.alpha = 0;
 		FlxTween.tween(bg, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
 
@@ -116,7 +115,6 @@ class FreeplayState extends MusicBeatState
     	watermark.x = FlxG.width - watermark.width;
     	watermark.y = FlxG.height - watermark.height - 25;
     	add(watermark);
-		// Animación simple para la marca de agua
 		watermark.alpha = 0;
 		FlxTween.tween(watermark, {alpha: 1}, 0.8, {ease: FlxEase.quadOut, startDelay: 0.3});
 
@@ -133,7 +131,6 @@ class FreeplayState extends MusicBeatState
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
-			// Animaciones simples para las canciones
 			songText.alpha = 0;
 			icon.alpha = 0;
 			FlxTween.tween(songText, {alpha: 1}, 0.4, {ease: FlxEase.quadOut, startDelay: 0.3 + (i * 0.02)});
@@ -147,9 +144,6 @@ class FreeplayState extends MusicBeatState
 			iconArray.push(icon);
 			add(icon);
 
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 		WeekData.setDirectoryFromWeek();
 
@@ -168,7 +162,6 @@ class FreeplayState extends MusicBeatState
 
 		add(scoreText);
 		
-		// Animaciones simples para elementos de UI
 		scoreText.alpha = 0;
 		diffText.alpha = 0;
 		scoreBG.alpha = 0;
@@ -198,7 +191,6 @@ class FreeplayState extends MusicBeatState
 
 		add(bottomBG);
 		
-
 		var leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
 		bottomString = leText;
 		var size:Int = 16;
@@ -208,7 +200,6 @@ class FreeplayState extends MusicBeatState
 
 		add(bottomText);
 		
-		// Animaciones simples para elementos inferiores
 		bottomBG.alpha = 0;
 		bottomText.alpha = 0;
 		FlxTween.tween(bottomBG, {alpha: 1}, 0.5, {ease: FlxEase.quadOut, startDelay: 1.2});
@@ -221,7 +212,6 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 		super.create();
 
-		// Inicialización simple sin LoadingState
 		changeSelection();
 		updateTexts();
 	}
@@ -350,8 +340,8 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.music.volume = 0;
 
 				Mods.currentModDirectory = songs[curSelected].folder;
-				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-				PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+				var asong:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+				PlayState.SONG = Song.loadFromJson(asong, songs[curSelected].songName.toLowerCase());
 				if (PlayState.SONG.needsVoices)
 				{
 					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
@@ -387,21 +377,21 @@ class FreeplayState extends MusicBeatState
 		{
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
-			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+			var asong:String = Highscore.formatSong(songLowercase, curDifficulty);
 			/*#if MODS_ALLOWED
-			if(!FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+			if(!FileSystem.exists(Paths.modsJson(songLowercase + '/' + asong)) && !FileSystem.exists(Paths.json(songLowercase + '/' + asong))) {
 			#else
-			if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
+			if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + asong))) {
 			#end
-				poop = songLowercase;
+				asong = songLowercase;
 				curDifficulty = 1;
 				trace('Couldnt find file');
 			}*/
-			trace(poop);
+			trace(asong);
 
 			try
 			{
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+				PlayState.SONG = Song.loadFromJson(asong, songLowercase);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 
@@ -511,8 +501,6 @@ class FreeplayState extends MusicBeatState
 				}
 			});
 		}
-
-		// selector.y = (70 * curSelected) + 30;
 
 		var bullShit:Int = 0;
 
