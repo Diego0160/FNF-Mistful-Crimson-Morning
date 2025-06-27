@@ -56,7 +56,6 @@ class CreditsState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
-		// Usar animación centralizada para el fondo
 		LoadingState.animateBackgroundEntry(bg, 0.2);
 
 		// Initialize Conductor
@@ -237,14 +236,13 @@ class CreditsState extends MusicBeatState
 		for (i in 0...creditsStuff.length)
 		{
 			var isSelectable:Bool = !unselectableCheck(i);
-			var optionText:Alphabet = new Alphabet(FlxG.width / 2, 180, creditsStuff[i][0], !isSelectable); // Cambiado de 300 a 180 para menos espaciado
+			var optionText:Alphabet = new Alphabet(FlxG.width / 2, 180, creditsStuff[i][0], !isSelectable);
 			optionText.isMenuItem = true;
 			optionText.targetY = i;
 			optionText.changeX = false;
 			optionText.snapToPosition();
 			grpOptions.add(optionText);
 			
-			// Usar animación centralizada para las opciones de créditos
 			LoadingState.animateUIEntry(optionText, "bottom", 30, 0.4 + (i * 0.05));
 
 			if(isSelectable) {
@@ -270,8 +268,6 @@ class CreditsState extends MusicBeatState
 				iconArray.push(icon);
 				add(icon);
 				
-				// Usar animación centralizada para los iconos
-				LoadingState.animateUIEntry(icon, "right", 40, 0.5 + (i * 0.05));
 				Mods.currentModDirectory = '';
 
 				if(curSelected == -1) curSelected = i;
