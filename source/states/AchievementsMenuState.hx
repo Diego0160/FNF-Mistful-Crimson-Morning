@@ -124,7 +124,6 @@ class AchievementsMenuState extends MusicBeatState
 		_changeSelection();
 		super.create();
 		
-		// Configurar entrada estándar del menú
 		LoadingState.setupMenuStateEntry();
 		
 		FlxG.camera.follow(camFollow, null, 9);

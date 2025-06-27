@@ -76,11 +76,9 @@ class ModsMenuState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
-		// Usar animación centralizada para el fondo
 		LoadingState.animateBackgroundEntry(bg, 0.2);
 
 		bgList = FlxSpriteUtil.drawRoundRect(new FlxSprite(40, 40).makeGraphic(340, 440, FlxColor.TRANSPARENT), 0, 0, 340, 440, 15, 15, FlxColor.BLACK);
-		// Usar animación centralizada para la lista de mods
 		LoadingState.animateUIElementEntry(bgList, 0.4);
 
 		modsGroup = new FlxTypedGroup<ModItem>();
@@ -185,7 +183,6 @@ class ModsMenuState extends MusicBeatState
 			changeSelectedMod();
 			super.create();
 			
-			// Configurar entrada estándar del menú
 			LoadingState.setupMenuStateEntry();
 			return super.create();
 		}
@@ -904,8 +901,8 @@ class ModItem extends FlxSpriteGroup
 			if(pack.color != null)
 			{
 				this.bgColor = FlxColor.fromRGB(pack.color[0] != null ? pack.color[0] : 170,
-											  pack.color[1] != null ? pack.color[1] : 0,
-											  pack.color[2] != null ? pack.color[2] : 255);
+											  	pack.color[1] != null ? pack.color[1] : 0,
+											  	pack.color[2] != null ? pack.color[2] : 255);
 			}
 			this.mustRestart = (pack.restart == true);
 		}
